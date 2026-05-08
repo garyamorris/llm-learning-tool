@@ -1,73 +1,92 @@
-# React + TypeScript + Vite
+# How does an LLM actually work?
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A tiny illustrated guide that explains how large language models work — for
+people who've used a chatbot but don't know what's going on under the hood.
+No jargon, no equations. Just ten short chapters and a lot of clickable
+demos.
 
-Currently, two official plugins are available:
+**Live:** https://llm-learning-tool-921137113764.us-central1.run.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## What's inside
 
-## React Compiler
+A scrollable single-page site with ten chapters. Each one builds on the
+last and each has a small interactive demo you can poke at:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| #   | Chapter                                | Demo                                             |
+| --- | -------------------------------------- | ------------------------------------------------ |
+| 1   | It's just guessing the next word        | Pick-a-word with a temperature knob & autoplay   |
+| 2   | Words aren't words to it                | Real GPT-4 tokenizer running in your browser     |
+| 3   | Meaning lives in space                  | 2D word map + king − man + woman analogy demo    |
+| 4   | How did it learn this?                  | Live training visualization, accuracy bar        |
+| 5   | Why it confidently makes stuff up       | Spot-the-fake-citation game                      |
+| 6   | Paying attention                        | Attention weights over example sentences         |
+| 7   | Goldfish memory                         | Draggable context window over a fake chat        |
+| 8   | From parrot to assistant                | Base-model vs chat-tuned A/B for the same prompt |
+| 9   | Hidden instructions                     | Persona switcher with a "peek behind the curtain"|
+| 10  | Beyond just words                       | Step-through of an LLM calling tools             |
 
-## Expanding the ESLint configuration
+Mini-recaps sit between the major sections to keep the thread of the story
+visible.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- [Vite](https://vitejs.dev/) + React + TypeScript
+- [Tailwind CSS](https://tailwindcss.com/) for the playful illustrated styling
+- [Framer Motion](https://www.framer.com/motion/) for the animations
+- [`gpt-tokenizer`](https://github.com/niieani/gpt-tokenizer) for chapter 2's
+  real-tokenizer demo (cl100k_base, the GPT-4 vocab)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+The site is purely static — no backend, no API calls. All "model behaviour"
+is hand-authored or simulated for teaching purposes. The probability
+distributions in chapter 1, the embedding map coordinates in chapter 3, the
+attention weights in chapter 6, etc. are illustrative — not measured from a
+real model.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Local development
+
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # static output in dist/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Deploy
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The repo includes a `Dockerfile` and `nginx.conf` for hosting on
+[Google Cloud Run](https://cloud.google.com/run):
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+gcloud run deploy llm-learning-tool \
+  --source . \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --port 8080
 ```
+
+The Dockerfile is a two-stage build: Node compiles the Vite app, then
+Nginx serves the static `dist/`. It works anywhere a container runs.
+
+## A note on accuracy
+
+This is a teaching tool, not a textbook. The goal is to give a non-technical
+reader a useful working mental model in about fifteen minutes — not to be
+exhaustively correct. A few specific liberties:
+
+- **Chapter 3's embedding map is 2D**, but real embeddings have hundreds or
+  thousands of dimensions. The 2D coordinates are hand-placed so the
+  analogies land where they should.
+- **Chapter 4's "accuracy"** metric is `1 − total-variation-distance` to a
+  reference distribution, not a real cross-entropy loss. "Accuracy" lands
+  faster for a novice.
+- **Chapter 6's attention weights** are hand-authored to illustrate the
+  point, not extracted from a real transformer.
+- **Probability tables in chapter 1** are written by hand to feel real,
+  with 3 starter prompts authored several token-steps deep.
+
+If you spot something that's misleading rather than just simplified, please
+file an issue.
+
+## License
+
+MIT — do whatever, but don't pretend this is the *full* picture of how LLMs
+work. It's a friendly cartoon of one.
