@@ -10,6 +10,7 @@ import { ContextWindowDemo } from './components/ContextWindowDemo'
 import { BaseVsChatDemo } from './components/BaseVsChatDemo'
 import { PersonaDemo } from './components/PersonaDemo'
 import { ToolUseDemo } from './components/ToolUseDemo'
+import { Recap } from './components/Recap'
 
 function FloatingDoodle({
   className,
@@ -249,6 +250,17 @@ function App() {
         </div>
       </section>
 
+      <Recap
+        chapters="chapters 1–2"
+        title="what we know so far"
+        points={[
+          'an LLM is a <strong>next-token predictor</strong>: look at the text so far, guess what comes next, repeat.',
+          'it doesn\'t see <em>letters</em> or even <em>words</em> — it sees <strong>tokens</strong>, chunky word-pieces from a fixed vocabulary.',
+          'the <strong>temperature</strong> knob is just "always pick the top guess" vs. "sometimes pick a less-likely one." that\'s the only randomness.',
+        ]}
+        next="next we'll see how it knows which words are likely in the first place."
+      />
+
       <ChapterDivider />
 
       {/* ── CHAPTER 3 ────────────────────────────────────────────── */}
@@ -414,16 +426,16 @@ function App() {
 
       <ChapterDivider />
 
-      {/* ── INTERLUDE ─────────────────────────────────────────────── */}
-      <section className="max-w-3xl mx-auto px-6 py-12 text-center">
-        <div className="font-display text-4xl text-coral mb-4">halfway there.</div>
-        <p className="font-body text-lg text-ink/80 max-w-2xl mx-auto leading-relaxed">
-          You now know the raw machine: tokens, meaning-space, prediction,
-          training, the hallucination problem. But the chatbot you actually
-          talk to has a few more tricks bolted on top. Let's look at five of
-          them.
-        </p>
-      </section>
+      <Recap
+        chapters="chapters 3–5 · the raw machine, complete"
+        title="halfway there."
+        points={[
+          'every word lives at a <strong>position in meaning-space</strong>. similar words sit near each other; relationships (king→queen, paris→france) are consistent directions on the map.',
+          'this map wasn\'t designed — it <strong>emerged from training</strong>. the model was shown billions of sentences and nudged when it guessed wrong. it learned the shape of language by being wrong over and over.',
+          'because the mechanism predicts what\'s <em>plausible</em>, not what\'s <em>true</em>, <strong>hallucination is built in</strong>. a confident lie and a confident truth look identical from inside.',
+        ]}
+        next="that\'s the raw machine. but the chatbot you actually talk to has a few more layers bolted on top — let\'s look at them."
+      />
 
       {/* ── CHAPTER 6 ────────────────────────────────────────────── */}
       <section className="max-w-3xl mx-auto px-6 py-16">
@@ -517,6 +529,17 @@ function App() {
           </p>
         </div>
       </section>
+
+      <Recap
+        chapters="chapters 6–7 · how it stays coherent"
+        title="zooming in on what matters."
+        points={[
+          '<strong>attention</strong> lets every token look back at every earlier token and weigh how much it cares. that\'s how the model handles long-range stuff like pronouns, subject-verb agreement, and "stay on topic."',
+          'but it can only look back so far: the <strong>context window</strong> is a fixed-size slice of recent text. anything older is <em>gone</em> as far as the model is concerned.',
+          'this is why long chats start to "forget" — your earlier messages literally fall out of the window.',
+        ]}
+        next="next: how the raw text-predictor became the helpful chatbot you know."
+      />
 
       <ChapterDivider />
 
@@ -616,6 +639,17 @@ function App() {
           </p>
         </div>
       </section>
+
+      <Recap
+        chapters="chapters 8–9 · the chatbot layer"
+        title="from autocomplete to assistant."
+        points={[
+          'a "chat model" is a base model with two extra training stages: <strong>instruction tuning</strong> (here\'s how to be helpful) and <strong>RLHF</strong> (humans rank responses; the model leans toward higher-ranked ones).',
+          'every chat is invisibly prefixed with a <strong>system prompt</strong> — the rules the model is told to follow before you even type. swap the prompt, swap the personality.',
+          '"jailbreaks" exist because the system prompt is just text in the context window, and text can be argued with.',
+        ]}
+        next="last stop: how a text-only machine still manages to do real things in the world."
+      />
 
       <ChapterDivider />
 
