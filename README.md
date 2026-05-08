@@ -9,7 +9,7 @@ demos.
 
 ## What's inside
 
-A scrollable single-page site with ten chapters. Each one builds on the
+A scrollable single-page site with fifteen chapters. Each one builds on the
 last and each has a small interactive demo you can poke at:
 
 | #   | Chapter                                | Demo                                             |
@@ -24,6 +24,11 @@ last and each has a small interactive demo you can poke at:
 | 8   | From parrot to assistant                | Base-model vs chat-tuned A/B for the same prompt |
 | 9   | Hidden instructions                     | Persona switcher with a "peek behind the curtain"|
 | 10  | Beyond just words                       | Step-through of an LLM calling tools             |
+| 11  | Thinking out loud                       | Direct vs chain-of-thought on multi-step problems|
+| 12  | Show, don't tell                        | Few-shot prompting at 0 / 1 / 3 examples         |
+| 13  | Giving it homework                      | Same question with and without RAG retrieval     |
+| 14  | Eyes and ears                           | Image patches → vision tokens (chapter 2 redux)  |
+| 15  | The honest takeaway                     | "Sure of / still figuring out / watching" cards  |
 
 Mini-recaps sit between the major sections to keep the thread of the story
 visible.

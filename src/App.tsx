@@ -10,6 +10,11 @@ import { ContextWindowDemo } from './components/ContextWindowDemo'
 import { BaseVsChatDemo } from './components/BaseVsChatDemo'
 import { PersonaDemo } from './components/PersonaDemo'
 import { ToolUseDemo } from './components/ToolUseDemo'
+import { ChainOfThoughtDemo } from './components/ChainOfThoughtDemo'
+import { FewShotDemo } from './components/FewShotDemo'
+import { RAGDemo } from './components/RAGDemo'
+import { MultimodalDemo } from './components/MultimodalDemo'
+import { CapstoneCards } from './components/CapstoneCards'
 import { Recap } from './components/Recap'
 
 function FloatingDoodle({
@@ -706,6 +711,251 @@ function App() {
 
       <ChapterDivider />
 
+      {/* ── INTERLUDE 2 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-12 text-center">
+        <div className="font-display text-4xl text-coral mb-4">
+          one more layer.
+        </div>
+        <p className="font-body text-lg text-ink/80 max-w-2xl mx-auto leading-relaxed">
+          You've seen the machine and the chatbot wrapper. The last few
+          chapters are about <em>how to actually get good answers out of
+          one</em> — the techniques people have figured out that turn a
+          decent next-token predictor into something genuinely useful.
+        </p>
+      </section>
+
+      {/* ── CHAPTER 11 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={11} label="thinking out loud" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          Tell it to think before it speaks.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            Here's a strange empirical fact: if you ask an LLM a hard
+            problem, it often gets it wrong. If you ask the{' '}
+            <em>same</em> LLM the same hard problem and add{' '}
+            <strong className="text-coral">"think step by step"</strong>, it
+            often gets it right.
+          </p>
+          <p>
+            This shouldn't be surprising once you remember chapter 1. Every
+            token the model writes goes back into its own context window,
+            ready to be attended to (chapter 6) when predicting the{' '}
+            <em>next</em> token. So writing out the reasoning gives the
+            model a scratch-pad — partial results it can build on. Without
+            that scratch-pad, it has to leap to the answer in one shot, and
+            multi-step problems are exactly the kind of thing where you
+            shouldn't leap.
+          </p>
+          <p>Watch:</p>
+        </div>
+
+        <ChainOfThoughtDemo />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            This is the core trick behind so-called "reasoning models" —
+            OpenAI's o1 and o3, Anthropic's extended-thinking modes, Google's
+            thinking variants. They've been trained to do this scratch-pad
+            step internally, before showing you an answer. Slower and more
+            expensive, but considerably better at the kinds of problems
+            where one wrong step compounds.
+          </p>
+          <p className="font-hand text-2xl text-ink">
+            <span className="text-coral">More tokens of reasoning</span> →
+            more substrate for the next-token machinery to work with → better
+            answer.
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 12 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={12} label="show, don't tell" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          Teach it a new task in three examples.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            Suppose you want the model to do something specific — extract
+            dates from sloppy text, rewrite English in pirate-speak, classify
+            sentiment as a single emoji. You could write a long instruction
+            describing exactly what you want.
+          </p>
+          <p>
+            Or you could just <em>show it</em>. Two or three examples in the
+            prompt, then your real input. The model picks up the pattern and
+            continues it. No retraining, no API magic — you just paste
+            examples in.
+          </p>
+          <p>
+            This works because of the very first thing we learned: an LLM is
+            a pattern-continuer. Give it a clear pattern, and continuing
+            it is the most probable next-token sequence:
+          </p>
+        </div>
+
+        <FewShotDemo />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            This is called <strong className="text-coral">few-shot
+            prompting</strong>, and it's one of the most useful skills you
+            can develop with these tools. When the model isn't doing what
+            you want, the fix is rarely "write longer instructions." It's
+            usually "show me one or two examples of what good output looks
+            like."
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 13 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={13} label="giving it homework" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          The proper fix for hallucination.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            Remember chapter 5 — the model invents plausible-sounding facts
+            because, from inside, plausible and true look the same. There's a
+            beautifully simple fix: <em>don't ask it from memory</em>. Hand
+            it the source documents and ask it to read.
+          </p>
+          <p>
+            The trick goes by the name{' '}
+            <strong className="text-coral">RAG</strong> — retrieval-augmented
+            generation. Before the model gets your question, the system
+            grabs the most relevant chunks of text from somewhere (a
+            knowledge base, a website, your company wiki) and pastes them
+            into the context window. The model now has the actual material
+            to work from, not a fuzzy memory of training data.
+          </p>
+        </div>
+
+        <RAGDemo />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            Almost every "AI search" or "AI assistant for our company docs"
+            product is RAG under the hood. ChatGPT browsing the web,
+            Perplexity, Glean, your bank's customer-service bot — same
+            recipe: retrieve, then ask. The model didn't get smarter; it
+            just got the right reading material.
+          </p>
+          <p className="font-hand text-2xl text-ink">
+            <span className="text-coral">Bad facts in</span>, bad facts out.
+            Good facts in, good facts out. The window is everything.
+          </p>
+        </div>
+      </section>
+
+      <Recap
+        chapters="chapters 11–13"
+        title="how to actually get good results"
+        points={[
+          '<strong>Tell it to think.</strong> "Step by step" is a magic phrase. More reasoning tokens → more substrate for the prediction machinery. Reasoning models do this internally.',
+          '<strong>Show, don\'t tell.</strong> Few-shot examples in the prompt are often faster and clearer than long instructions. Patterns are what the model continues.',
+          '<strong>Hand it the source.</strong> Retrieval-augmented generation pastes real documents into the context window. The model goes from "remembering" to "reading" — and stops making things up.',
+        ]}
+        next="next: that whole story applies to images and audio too. it's the same mechanism."
+      />
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 14 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={14} label="eyes and ears" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          It's the same trick, applied to pixels.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            Modern chat tools can see images, hear voices, watch videos. How?
+            Did somebody invent a totally new mechanism?
+          </p>
+          <p>
+            No. They reused chapter 2.
+          </p>
+          <p>
+            An image gets sliced into a grid of small patches. Each patch
+            becomes a <strong className="text-coral">vision token</strong> —
+            a vector in the same kind of meaning-space we built in chapter 3
+            for words. Then those vision-tokens flow into the model
+            alongside any text tokens. Attention (chapter 6) freely mixes
+            them. The model predicts the next text token using everything in
+            the window — words and patches alike.
+          </p>
+          <p>Try it:</p>
+        </div>
+
+        <MultimodalDemo />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            Audio gets the same treatment: chop the waveform into chunks,
+            each chunk becomes a token. Video adds time as another axis. 3D
+            scenes can be tokenized too. There's a real chance that{' '}
+            <em>"everything becomes tokens"</em> will turn out to be one of
+            the most consequential ideas of this technological era.
+          </p>
+          <p className="font-hand text-2xl text-ink">
+            One mechanism. <span className="text-coral">Words, pictures,
+            sound, motion — all reduced to the same kind of token</span>, all
+            attended to in the same window, all used to predict the next
+            piece.
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 15 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={15} label="the honest takeaway" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          What it is. What it isn't. What's coming.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            You've now seen most of what's actually happening when you type
+            into a chat box. Before we wrap up, a clear-eyed pass at what
+            we're sure of, what we don't yet know, and what to keep an eye
+            on.
+          </p>
+        </div>
+
+        <CapstoneCards />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-4">
+          <p>
+            None of this is settled. The technology is moving faster than
+            our understanding of it, and our understanding is moving faster
+            than our policy. The right posture is{' '}
+            <strong>curious but not credulous</strong>: take it seriously,
+            verify what matters, don't ascribe more than is there, and don't
+            ascribe less.
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
       {/* ── CLOSING ─────────────────────────────────────────────── */}
       <section className="max-w-3xl mx-auto px-6 py-16">
         <h2 className="text-5xl md:text-6xl mb-6 leading-tight text-center">
@@ -727,7 +977,14 @@ function App() {
               text it can see), <strong>instruction tuning</strong> (so it
               acts like an assistant instead of an autocomplete), a hidden{' '}
               <strong>system prompt</strong> (which shapes its persona), and{' '}
-              <strong>tools</strong> (which let it act in the world).
+              <strong>tools</strong> (which let it act in the world). And we
+              get more out of it with three techniques that don't change the
+              model at all — <strong>chain-of-thought</strong> (let it think
+              on the page), <strong>few-shot prompting</strong> (show it
+              examples), and <strong>retrieval</strong> (paste the source
+              into the window). The same trick scales to{' '}
+              <strong>images and audio</strong>: chop them into patches or
+              chunks, treat them as tokens, done.
             </p>
             <p>
               That's it. That's the whole thing. No magic, no reasoning
@@ -777,6 +1034,24 @@ function App() {
                 <strong>The "personality" is a costume.</strong> A different
                 system prompt (or a different chat product) gets you a
                 different vibe from the same underlying machine.
+              </li>
+              <li>
+                <span className="font-hand text-coral text-xl">✦</span>{' '}
+                <strong>"Step by step" is a magic phrase.</strong> Hard
+                problem? Tell it to think out loud. The reasoning tokens
+                are what makes the answer better.
+              </li>
+              <li>
+                <span className="font-hand text-coral text-xl">✦</span>{' '}
+                <strong>Examples beat instructions.</strong> Show, don't
+                tell. Two or three examples in the prompt teach the model
+                a new task faster than any paragraph of rules.
+              </li>
+              <li>
+                <span className="font-hand text-coral text-xl">✦</span>{' '}
+                <strong>Paste the source.</strong> If the answer depends
+                on a specific document, give the model that document.
+                Don't expect it to remember.
               </li>
             </ul>
             <p className="font-hand text-2xl text-ink mt-6">
