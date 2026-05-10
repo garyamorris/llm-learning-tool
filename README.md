@@ -1,9 +1,14 @@
 # How does an LLM actually work?
 
-A tiny illustrated guide that explains how large language models work — for
-people who've used a chatbot but don't know what's going on under the hood.
-No jargon, no equations. Just ten short chapters and a lot of clickable
+Two illustrated guides for people who've used a chatbot but don't know
+what's going on under the hood. No jargon, no equations — just clickable
 demos.
+
+- **[/](https://llm-learning-tool-921137113764.us-central1.run.app/)** —
+  *How does an LLM actually work?* (15 chapters)
+- **[/jepa](https://llm-learning-tool-921137113764.us-central1.run.app/jepa)** —
+  *What if LLMs aren't the answer?* (5 chapters on JEPA, the leading
+  alternative paradigm)
 
 **Live:** https://llm-learning-tool-921137113764.us-central1.run.app
 
@@ -32,6 +37,19 @@ last and each has a small interactive demo you can poke at:
 
 Mini-recaps sit between the major sections to keep the thread of the story
 visible.
+
+### `/jepa` — the second guide
+
+A five-chapter companion that picks up where the LLM guide leaves off, and
+walks through the alternative paradigm championed by Yann LeCun:
+
+| #   | Chapter                                | Demo                                             |
+| --- | -------------------------------------- | ------------------------------------------------ |
+| 1   | The missing thing                       | Side-by-side: LLM answer vs what a world model needs |
+| 2   | Predict the gist, not the words         | Same meaning-map as LLM-ch3, but with a region-prediction blob |
+| 3   | The shape of the thing                  | Walk-through animated diagram of the JEPA architecture |
+| 4   | Mask part. Predict the rest.            | Train a JEPA in embedding space, watch loss converge |
+| 5   | The debate                              | "Pro / con / honest take" cards on the future of AGI |
 
 ## Stack
 
