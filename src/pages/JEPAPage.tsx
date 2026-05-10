@@ -12,6 +12,11 @@ import { ImplementationsTour } from '../components/jepa/ImplementationsTour'
 import { PlanningDemo } from '../components/jepa/PlanningDemo'
 import { HybridDemo } from '../components/jepa/HybridDemo'
 import { WatchCards } from '../components/jepa/WatchCards'
+import { HierarchicalDemo } from '../components/jepa/HierarchicalDemo'
+import { ActionConditionedDemo } from '../components/jepa/ActionConditionedDemo'
+import { CousinsTour } from '../components/jepa/CousinsTour'
+import { BrainEchoes } from '../components/jepa/BrainEchoes'
+import { LimitsCards } from '../components/jepa/LimitsCards'
 
 function FloatingDoodle({
   className,
@@ -655,6 +660,250 @@ export function JEPAPage() {
           <p>
             Whichever way it shakes out, you now have the vocabulary to
             follow the arguments. That's the whole point of this guide.
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
+      {/* ── INTERLUDE 3 ───────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-12 text-center">
+        <div className="font-display text-4xl text-teal mb-4">
+          one more level down.
+        </div>
+        <p className="font-body text-lg text-ink/80 max-w-2xl mx-auto leading-relaxed">
+          The last five chapters go a layer deeper:{' '}
+          <em>how to stack JEPAs</em>,{' '}
+          <em>how to make them act</em>,{' '}
+          <em>which methods they're related to</em>,{' '}
+          <em>where their ideas come from</em>, and{' '}
+          <em>what they fundamentally don't try to do</em>.
+        </p>
+      </section>
+
+      {/* ── CHAPTER 11 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={11} label="thinking at every scale" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          One JEPA is not enough.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            A single JEPA learns to predict at one timescale — usually
+            "what happens in the next short window." But real intelligence
+            doesn't work that way. When you watch someone cooking dinner,
+            you're predicting at <em>several</em> timescales at once: the
+            next knife stroke (milliseconds), the next dish prep step
+            (seconds), the meal as a whole (minutes). Each prediction is
+            useful, and they reinforce each other.
+          </p>
+          <p>
+            LeCun's proposed answer:{' '}
+            <strong className="text-teal">hierarchical JEPA</strong>, or
+            H-JEPA. Stack JEPA modules at different abstraction levels.
+            Lower levels predict small, frequent things. Higher levels
+            predict big, rare things. Lower levels summarize up; higher
+            levels constrain down.
+          </p>
+        </div>
+
+        <HierarchicalDemo />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            H-JEPA, in 2025, is more aspiration than shipping product. The
+            tricky parts are coordinating the levels (when does the
+            high-level decide a "next plan step"?) and training them
+            without each level interfering with the others. These are
+            active research problems, not solved ones.
+          </p>
+          <p className="font-hand text-2xl text-ink">
+            <span className="text-teal">If you only remember one slogan:</span>{' '}
+            real-world prediction is multi-scale, so the architecture
+            should be too.
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 12 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={12} label="adding actions" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          What happens if I do this?
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            Up to now, the JEPA we've described predicts{' '}
+            <em>what comes next</em> in a passive sense — as if the model
+            were watching a movie. For a passive observer, that's enough.
+            For an agent, it isn't.
+          </p>
+          <p>
+            An agent doesn't just want "what comes next" — it wants{' '}
+            <strong className="text-teal">"what comes next if I do X"</strong>.
+            The fix is small: feed the predictor an action alongside the
+            current embedding. Now the same starting state can yield
+            different predicted next-states under different actions:
+          </p>
+        </div>
+
+        <ActionConditionedDemo />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            This is the variant V-JEPA 2 trains explicitly. It's also the
+            ingredient that makes JEPA usable for planning (chapter 8):
+            with an action-conditioned predictor, the agent can simulate
+            "what if I tried plan A? plan B?" in its head before committing.
+          </p>
+          <p className="font-hand text-2xl text-ink">
+            <span className="text-teal">
+              From "I see what's about to happen" to "I see what would
+              happen if I acted."
+            </span>{' '}
+            A small change in inputs. A huge change in usefulness.
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 13 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={13} label="cousins in the family" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          JEPA isn't alone in the woods.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            JEPA is the most ambitious member of a broader family of
+            self-supervised learning methods that has been quietly very
+            successful over the past five years. Many of these methods
+            preceded JEPA and inspired specific tricks. Some are arguably
+            <em> more practically used</em> today than JEPA itself.
+          </p>
+          <p>
+            If you're trying to follow the AI literature, this is the
+            family tree you'll see referenced. A quick tour:
+          </p>
+        </div>
+
+        <CousinsTour />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            Two of these — DINOv2 and MAE — are probably used in more
+            real-world systems today than JEPA. The story of "which
+            self-supervised method wins" is still being written. JEPA is
+            the boldest theoretical bet; whether it produces the boldest
+            empirical result remains to be seen.
+          </p>
+        </div>
+      </section>
+
+      <Recap
+        chapters="chapters 11–13"
+        title="JEPA in its broader context"
+        points={[
+          '<strong>H-JEPA:</strong> stack JEPAs across timescales so the model can predict the next frame, next event, and next plan all at once.',
+          '<strong>Action-conditioned JEPA:</strong> add an action input to the predictor. Now the model can answer "what if I do X?" — the prerequisite for planning.',
+          '<strong>Cousin methods (SimCLR, BYOL, DINO, MAE):</strong> the family of self-supervised methods JEPA emerged from. Each chose a different way to avoid collapse and learn structure from raw observation.',
+        ]}
+        next="next: what is JEPA borrowing from neuroscience? And what won't it ever be able to do?"
+      />
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 14 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={14} label="echoes of how brains work" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          This idea didn't come out of nowhere.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            LeCun likes to point out that JEPA's core recipe —{' '}
+            <em>predict what comes next, learn from your prediction
+            errors</em> — is not a fresh invention. Neuroscientists and
+            cognitive scientists have been describing the brain in
+            essentially these terms for decades.
+          </p>
+          <p>
+            Four parallels worth knowing:
+          </p>
+        </div>
+
+        <BrainEchoes />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            Whether brains literally "do JEPA" is open to debate. Brains
+            do many things current AI doesn't — sleep, dream, forget,
+            embody, age — and they aren't trained on Common Crawl. But the
+            family resemblance to predictive coding and free-energy
+            theories is suggestive enough that "is intelligence just very
+            good prediction?" has become a respectable question in both
+            AI and neuroscience.
+          </p>
+          <p className="font-hand text-2xl text-ink">
+            <span className="text-teal">
+              JEPA's bet is partly an empirical one
+            </span>{' '}
+            and partly a bet that brains have been quietly telling us
+            something for thirty years.
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 15 ──────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={15} label="the honest limits" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          What JEPA isn't trying to be.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            We've spent fifteen chapters making the JEPA case. Time to
+            close with the opposite: an honest list of what JEPA{' '}
+            <em>doesn't do</em>, even in principle. Some of these are
+            current limits that may be solved. Others are baked-in to the
+            paradigm — they live where JEPA's ambitions end and some other
+            system has to begin.
+          </p>
+        </div>
+
+        <LimitsCards />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-4">
+          <p>
+            None of these are damning. A well-designed AI system might
+            never need a single model that does everything — the same way
+            you don't expect your eyes to also do logic puzzles. A
+            future that combines a JEPA-shaped world model, an LLM-shaped
+            language model, a calculator, a search index, and a few other
+            specialized tools is{' '}
+            <em>completely consistent</em> with JEPA being a real,
+            important advance — and not the whole show.
+          </p>
+          <p className="font-hand text-2xl text-ink">
+            <span className="text-teal">No paradigm does everything.</span>{' '}
+            The interesting question is which combination of paradigms
+            does the most useful work — and JEPA has earned a strong
+            place in that combination.
           </p>
         </div>
       </section>

@@ -7,7 +7,7 @@ demos.
 - **[/](https://llm-learning-tool-921137113764.us-central1.run.app/)** —
   *How does an LLM actually work?* (15 chapters)
 - **[/jepa](https://llm-learning-tool-921137113764.us-central1.run.app/jepa)** —
-  *What if LLMs aren't the answer?* (10 chapters on JEPA, the leading
+  *What if LLMs aren't the answer?* (15 chapters on JEPA, the leading
   alternative paradigm)
 
 **Live:** https://llm-learning-tool-921137113764.us-central1.run.app
@@ -40,8 +40,8 @@ visible.
 
 ### `/jepa` — the second guide
 
-A ten-chapter companion that picks up where the LLM guide leaves off, and
-walks through the alternative paradigm championed by Yann LeCun:
+A fifteen-chapter companion that picks up where the LLM guide leaves off,
+and walks through the alternative paradigm championed by Yann LeCun:
 
 | #   | Chapter                                | Demo                                             |
 | --- | -------------------------------------- | ------------------------------------------------ |
@@ -54,7 +54,12 @@ walks through the alternative paradigm championed by Yann LeCun:
 | 7   | From paper to working system            | Tour of I-JEPA, V-JEPA, V-JEPA 2 with results    |
 | 8   | Planning by imagining                   | Grid-world robot: imagine plans → evaluate → execute |
 | 9   | The hybrid future                       | Same scenario shown three ways: LLM-only / JEPA-only / combined |
-| 10  | What to watch this decade               | Open problems / applications / milestones cards   |
+| 10  | What to watch this decade               | Open problems / applications / milestones cards  |
+| 11  | Thinking at every scale (H-JEPA)        | Three predictions at three timescales for one scenario |
+| 12  | Adding actions                          | Pick an action, see how the predicted next-state changes |
+| 13  | Cousins in the family                   | Tour of SimCLR / BYOL / DINO / MAE with vs-JEPA contrast |
+| 14  | Echoes of how brains work               | Predictive coding, free energy, dopamine, infant physics |
+| 15  | The honest limits                       | What JEPA does / where it struggles / what it doesn't try |
 
 ## Stack
 
