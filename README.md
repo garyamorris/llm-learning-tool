@@ -7,7 +7,7 @@ demos.
 - **[/](https://llm-learning-tool-921137113764.us-central1.run.app/)** —
   *How does an LLM actually work?* (15 chapters)
 - **[/jepa](https://llm-learning-tool-921137113764.us-central1.run.app/jepa)** —
-  *What if LLMs aren't the answer?* (5 chapters on JEPA, the leading
+  *What if LLMs aren't the answer?* (10 chapters on JEPA, the leading
   alternative paradigm)
 
 **Live:** https://llm-learning-tool-921137113764.us-central1.run.app
@@ -40,7 +40,7 @@ visible.
 
 ### `/jepa` — the second guide
 
-A five-chapter companion that picks up where the LLM guide leaves off, and
+A ten-chapter companion that picks up where the LLM guide leaves off, and
 walks through the alternative paradigm championed by Yann LeCun:
 
 | #   | Chapter                                | Demo                                             |
@@ -50,6 +50,11 @@ walks through the alternative paradigm championed by Yann LeCun:
 | 3   | The shape of the thing                  | Walk-through animated diagram of the JEPA architecture |
 | 4   | Mask part. Predict the rest.            | Train a JEPA in embedding space, watch loss converge |
 | 5   | The debate                              | "Pro / con / honest take" cards on the future of AGI |
+| 6   | The collapse problem                    | Naive vs asymmetric training — watch encoders collapse |
+| 7   | From paper to working system            | Tour of I-JEPA, V-JEPA, V-JEPA 2 with results    |
+| 8   | Planning by imagining                   | Grid-world robot: imagine plans → evaluate → execute |
+| 9   | The hybrid future                       | Same scenario shown three ways: LLM-only / JEPA-only / combined |
+| 10  | What to watch this decade               | Open problems / applications / milestones cards   |
 
 ## Stack
 

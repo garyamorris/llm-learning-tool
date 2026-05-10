@@ -7,6 +7,11 @@ import { GistPrediction } from '../components/jepa/GistPrediction'
 import { ArchitectureDiagram } from '../components/jepa/ArchitectureDiagram'
 import { MaskAndPredict } from '../components/jepa/MaskAndPredict'
 import { DebateCards } from '../components/jepa/DebateCards'
+import { CollapseDemo } from '../components/jepa/CollapseDemo'
+import { ImplementationsTour } from '../components/jepa/ImplementationsTour'
+import { PlanningDemo } from '../components/jepa/PlanningDemo'
+import { HybridDemo } from '../components/jepa/HybridDemo'
+import { WatchCards } from '../components/jepa/WatchCards'
 
 function FloatingDoodle({
   className,
@@ -386,6 +391,270 @@ export function JEPAPage() {
             the world before you build a model of language</strong> — is{' '}
             getting taken seriously across the field. Even at labs that
             don't call it JEPA.
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
+      {/* ── INTERLUDE ─────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-12 text-center">
+        <div className="font-display text-4xl text-teal mb-4">
+          let's go further.
+        </div>
+        <p className="font-body text-lg text-ink/80 max-w-2xl mx-auto leading-relaxed">
+          You've seen what JEPA is and why it exists. The next five chapters
+          go a level deeper: <em>why it almost doesn't work</em>, what's
+          actually been built, the endgame vision, and where this likely
+          goes next.
+        </p>
+      </section>
+
+      {/* ── CHAPTER 6 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={6} label="the collapse problem" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          Why this almost doesn't work.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            Here's a question that bothered researchers for years: if you
+            train two encoders by minimizing the distance between their
+            outputs... what stops them from{' '}
+            <strong className="text-coral">both outputting the same
+            constant</strong>?
+          </p>
+          <p>
+            That would technically achieve perfect loss. Distance between
+            two identical vectors is zero. The model is also useless — it
+            has discarded all information about what was different between
+            different inputs. The dreaded{' '}
+            <strong className="text-coral">representational collapse</strong>.
+          </p>
+          <p>
+            This is the central technical problem that any JEPA-style
+            architecture has to solve. The fix is elegant and a little
+            magical:
+          </p>
+        </div>
+
+        <CollapseDemo />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            By making the target encoder a slow-moving copy of the context
+            encoder (no gradient flowing back through it), the model is{' '}
+            <em>prevented</em> from racing both encoders to a trivial
+            solution. The context encoder has to do real work to make its
+            outputs match the (slow, lagging) target. The only way to keep
+            up is to actually learn structure.
+          </p>
+          <p className="font-hand text-2xl text-ink">
+            <span className="text-teal">An ugly hack with a beautiful effect.</span>{' '}
+            Several related self-supervised methods (BYOL, DINO, SimSiam)
+            use variations on this same asymmetry trick.
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 7 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={7} label="from paper to working system" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          What's actually been built.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            JEPA is more than a paper-shaped theory. Meta's FAIR group has
+            shipped a handful of concrete implementations, each pushing the
+            recipe further. None of them is a household name — there's no
+            "ChatGPT moment" for JEPA yet — but the research trajectory
+            is real, and it's pointed somewhere specific.
+          </p>
+          <p>Here's the lineage:</p>
+        </div>
+
+        <ImplementationsTour />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            Notice the arc: images → video → robotics. Each generation
+            scales up and pushes toward a more ambitious goal. The bet is
+            that this trajectory eventually arrives somewhere transformative
+            — a general-purpose world model that becomes the perceptual
+            backbone for embodied AI.
+          </p>
+          <p>
+            The bet might also fizzle. We won't know for a few years.
+          </p>
+        </div>
+      </section>
+
+      <Recap
+        chapters="chapters 6–7"
+        title="the bits that make it real"
+        points={[
+          '<strong>Why it doesn\'t collapse:</strong> the target encoder is a slow-moving copy of the context encoder, no gradient through it. Asymmetry forces actual learning.',
+          '<strong>What actually exists today:</strong> I-JEPA (images), V-JEPA (video), V-JEPA 2 (robotics). All Meta FAIR. Real benchmark results, no household-name product yet.',
+          '<strong>The trajectory:</strong> the recipe is being pushed from image features → video understanding → world models for embodied agents.',
+        ]}
+        next="next: what could you actually DO with a learned world model?"
+      />
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 8 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={8} label="planning by imagining" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          What you can do with a world model.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            Here's why LeCun keeps pitching JEPA: once you have a model that
+            knows how the world evolves, you can use it for{' '}
+            <strong className="text-teal">planning</strong>.
+          </p>
+          <p>
+            The idea: instead of jumping straight to action, an agent first{' '}
+            <em>imagines</em> the consequences of several candidate plans —
+            running them through its internal world model. It evaluates the
+            imagined outcomes, picks the best one, and then acts.
+          </p>
+          <p>
+            This isn't a new idea. "Model-based reinforcement learning" has
+            done this for decades. What's new is having a world model
+            that's actually any good — one that was learned from raw
+            video, without hand-engineered features, and that predicts in
+            useful embedding-space rather than in pixel-space.
+          </p>
+          <p>Watch a robot do it:</p>
+        </div>
+
+        <PlanningDemo />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            This is LeCun's "objective-driven AI": an agent has a goal, a
+            world model that predicts consequences, a scorer that evaluates
+            imagined outcomes against the goal, and a planner that picks
+            the best plan. The whole thing sits on top of a JEPA-style
+            perceptual model trained from raw observation.
+          </p>
+          <p>
+            It's exactly the kind of thing autoregressive LLMs are
+            <em> not</em> built to do. LLMs commit to one token at a time,
+            in the order they speak. They don't naturally "imagine three
+            options and pick the best." (You can fake it with sampling and
+            chain-of-thought, but the architecture isn't designed for it.)
+          </p>
+          <p className="font-hand text-2xl text-ink">
+            <span className="text-teal">Imagine, evaluate, act.</span>{' '}
+            That's the playbook the JEPA-camp thinks gets us past the
+            current LLM ceiling.
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 9 ────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={9} label="the hybrid future" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          Probably not either-or.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            The "LLMs vs JEPAs" framing makes for good arguments at
+            conferences. The actual future of AI is much more likely to be{' '}
+            <em>both</em>.
+          </p>
+          <p>
+            LLMs are extraordinary at language. They have absorbed an
+            enormous amount of human knowledge through text. They can
+            reason about abstract symbols, follow instructions, and
+            communicate. Their failure modes are the ones we covered in
+            chapter 1: physics, planning, embodiment — anything where you
+            need an actual model of the world rather than a model of words.
+          </p>
+          <p>
+            JEPAs are extraordinary at perception. They can build rich
+            internal world models from raw video. Their failure modes are
+            the opposite: they have no built-in way to communicate, follow
+            symbolic instructions, or use the accumulated knowledge in
+            human text.
+          </p>
+          <p>
+            The obvious move: glue them together. Use a JEPA for
+            world-modeling and perception, an LLM for language and symbolic
+            reasoning, and let them share information through embeddings.
+            See the difference:
+          </p>
+        </div>
+
+        <HybridDemo />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-8">
+          <p>
+            Several research labs are publicly working on architectures
+            like this. The exact form is still being worked out — should
+            they share a representation? Should one drive the other? Are
+            they two systems in conversation, or one unified one? — but the
+            direction is widely agreed on.
+          </p>
+          <p className="font-hand text-2xl text-ink">
+            <span className="text-teal">A model that perceives the world</span>{' '}
+            <span className="text-coral">+ a model that talks about it</span>{' '}
+            <span className="text-mustard">= an AI that does both well.</span>
+          </p>
+        </div>
+      </section>
+
+      <ChapterDivider />
+
+      {/* ── CHAPTER 10 ──────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 py-16">
+        <ChapterBadge n={10} label="what to watch this decade" />
+
+        <h2 className="text-5xl md:text-6xl mb-6 leading-tight">
+          Where this likely goes.
+        </h2>
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90">
+          <p>
+            JEPA is a research bet. Like any bet, it could pay off
+            spectacularly, fizzle quietly, or — most likely — partially work
+            and get absorbed into something bigger that nobody quite calls
+            JEPA. Here's a clear-eyed look at the things to keep an eye on:
+          </p>
+        </div>
+
+        <WatchCards />
+
+        <div className="font-body text-lg leading-relaxed space-y-4 text-ink/90 mt-4">
+          <p>
+            The honest stance, again, is{' '}
+            <strong>curious but not credulous</strong>. JEPA is the
+            best-articulated alternative to the autoregressive-token
+            paradigm that's currently dominating AI. It's worth following.
+            It's also unproven at consumer-product scale, and the LLM
+            camp's "just keep scaling" empirical case is genuinely strong.
+            We'll know more in a few years.
+          </p>
+          <p>
+            Whichever way it shakes out, you now have the vocabulary to
+            follow the arguments. That's the whole point of this guide.
           </p>
         </div>
       </section>
